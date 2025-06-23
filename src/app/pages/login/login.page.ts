@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LoginPage {
   password = '';
   errorMessage = '';
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
   
   onLogin(){
     const credentials ={
@@ -20,17 +21,24 @@ export class LoginPage {
       password: this.password
     };
 
-   this.authService.login(credentials).subscribe(
-      async (res) =>{
-        if (res.success){
+    console.log(this.email);
+    console.log(this.password);
+   this.authService.login(credentials).subscribe({
+      next: async (res) => {
+        console.log('Backend response:', res);
+
+        if (res.success) {
           await this.authService.storeToken(res.token);
-        } else{
-          this.errorMessage = res.message;
+          this.router.navigate(['/home']);
+        } else {
+          this.errorMessage = res.message || 'Login failed';
         }
       },
-      error => {
-        this.errorMessage = 'Server error, Please try again.';
+      error: (err) => {
+        console.error('Backend error:', err);
+        this.errorMessage = 'Server error';
       }
-    );
+    });
+
   }
 }
