@@ -53,6 +53,14 @@ export class AuthService {
     
   }
 
+   register( email: string, password:string){
+    return this.http.post<any>('http://localhost/taskmate-backend/register.php', {
+      email,
+      password,
+    });
+
+  }
+
 
 
 

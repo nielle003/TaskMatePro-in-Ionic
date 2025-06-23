@@ -72,4 +72,23 @@ export class HomePage implements OnInit {
   logout(){
     this.authService.logout();
   }
+
+  deleteTask(taskId:number){
+    if (confirm("Are you sure you want to delete this task?")){
+      this.tasksService.deleteTask(taskId).subscribe({
+        next: (res) =>{
+          if (res.success){
+            alert('Task deleted successfully!');
+            this.loadtasks();
+          }else{
+            alert('Failed to delete task');
+          }
+        },
+        error: err =>{
+          console.error('Error deleting task:', err);
+          alert('An error occurred while trying to delete the');
+        }
+      });
+    }
+  }
 }

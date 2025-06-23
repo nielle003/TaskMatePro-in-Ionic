@@ -18,6 +18,9 @@
       <ion-button fill="clear" color="primary" (click)="openEditModal(task)">
         Edit
       </ion-button>
+      <ion-button color="danger" slot="end" (click)="deleteTask(task.id)">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
     </ion-item>
   </ion-list>
 

@@ -41,4 +41,8 @@ export class LoginPage {
     });
 
   }
+
+  onRegister(){
+    this.router.navigate(['/register']);
+  }
 }

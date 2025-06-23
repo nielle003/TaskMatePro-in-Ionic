@@ -19,6 +19,10 @@ const routes: Routes = [
     path: 'edit-task-modal',
     loadChildren: () => import('./modals/edit-task-modal/edit-task-modal.module').then( m => m.EditTaskModalPageModule)
   },
+  {
+    path: 'register',
+    loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
+  },
 ];
 
 @NgModule({

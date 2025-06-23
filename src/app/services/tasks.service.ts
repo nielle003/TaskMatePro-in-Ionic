@@ -4,6 +4,7 @@ import { Storage } from '@ionic/storage-angular';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs';
+import { from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -68,10 +69,9 @@ export class TasksService {
   deleteTask(taskId: number): Observable<any> {
     return from(this.authservice.getToken()).pipe(
       switchMap((token) => {
-        return this.http.post(`http://localhost/taskmate-backend/delete-task.php`, { id: taskId }, {
+        return this.http.post('http://localhost/taskmate-backend/delete-task.php', { id: taskId }, {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
           },
         });
       })
