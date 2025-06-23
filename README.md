@@ -1,3 +1,9 @@
+add the folder "taskmate-backend" to /laragon/www
+
+
+
+
+
 Run these commands in Mysql to create the database and tables 
 
 CREATE DATABASE taskmate;
