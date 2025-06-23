@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage-angular';
+import { AuthService } from './auth.service';
 
 
 @Injectable({
@@ -10,7 +11,8 @@ export class TasksService {
   private _storage: Storage | null = null;
   constructor(
     private http: HttpClient,
-    private storage: Storage
+    private storage: Storage,
+    private authservice: AuthService
   ) { 
 
     this.init();
@@ -44,7 +46,7 @@ export class TasksService {
 
 
   async addTask(task: any){
-    const token = await this.getToken();
+    const token = await this.authservice.getToken();
     console.log('Sending token:', token);
 
     return this.http.post<any>('http://localhost/taskmate-backend/add-task.php', task, {
@@ -52,5 +54,8 @@ export class TasksService {
         'Authorization': `Bearer ${token}`
       }
     });
+  }
+  async editTask(updatedTask:any){
+    const token = await this.authservice.getToken
   }
 }
