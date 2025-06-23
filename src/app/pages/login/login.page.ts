@@ -26,9 +26,9 @@ export class LoginPage {
    this.authService.login(credentials).subscribe({
       next: async (res) => {
         console.log('Backend response:', res);
-
         if (res.success) {
           await this.authService.storeToken(res.token);
+          console.log('saved token:', res.token);
           this.router.navigate(['/home']);
         } else {
           this.errorMessage = res.message || 'Login failed';

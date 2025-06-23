@@ -13,31 +13,44 @@ import { Router } from '@angular/router';
 export class AuthService {
   private TOKEN_KEY = "jwt-token";
   private apiUrl = "http://localhost/taskmate-backend/login.php"; // Replace with your actual API endpoint
-  constructor(
-    private http: HttpClient,
-    private storage: Storage,
-    private router: Router
-  ) {
-    this.initStorage();
+  private _storage: Storage | null = null;
+  private _ready: Promise<void>;
+ 
+  constructor(private http: HttpClient, private storage: Storage, private router: Router) {
+    this._ready = this.init();
   }
-  async initStorage() {
-    await this.storage.create();
+
+  private async init() {
+    this._storage = await this.storage.create();
   }
+
+  private async ensureReady() {
+    await this._ready;
+  }
+
+
   login (credentials:{email:string,password:string}) {
     return this.http.post<any>(this.apiUrl, credentials);
   }
 
   async storeToken (token: string){
-    await this.storage.set(this.TOKEN_KEY, token);
+    await this.ensureReady(); 
+    await this._storage?.set('token', token);
+    console.log('Token stored:', token);
   }
 
   async getToken(){
-    return await this.storage.get(this.TOKEN_KEY);
+    await this.ensureReady();
+    const token = await this._storage?.get('token');
+    console.log('Token retrieved:', token);
+    return token ?? null;
   }
 
   async logout() {
-    await this.storage.remove(this.TOKEN_KEY);
-    this.router.navigate(['/home']);
+    await this.ensureReady();
+    await this._storage?.remove('token');
+    this.router.navigate(['/login']);
+    
   }
 
 

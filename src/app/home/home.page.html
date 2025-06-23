@@ -1,22 +1,49 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tasks
-    </ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>My Tasks</ion-title>
+    <ion-button slot = "end" expand="block" (click)="logout()">Log Out</ion-button>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ionic-card>
-    <ion-list>
-      <ion-item *ngFor="let task of tasks">
-        <ion-label>
-          <h2>{{ task.title }}</h2>
-          <p>{{ task.description }}</p>
-          <p>Due: {{ task.due_date }}</p>
-          <p>Status: {{ task.status }}</p>
-        </ion-label>
+<ion-content>
+  <!-- Task List -->
+  <ion-list>
+    <ion-item *ngFor="let task of tasks">
+      <ion-label>
+        <h2>{{ task.title }}</h2>
+        <p>{{ task.description }}</p>
+        <p>Due: {{ task.due_date }}</p>
+        <p>Status: {{ task.status }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- Add Task Form -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Add New Task</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Title</ion-label>
+        <ion-input [(ngModel)]="newTask.title" required></ion-input>
       </ion-item>
-    </ion-list>
-  </ionic-card>
+
+      <ion-item>
+        <ion-label position="floating">Description</ion-label>
+        <ion-textarea [(ngModel)]="newTask.description"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Due Date</ion-label>
+        <ion-datetime
+          display-format="YYYY-MM-DD"
+          [(ngModel)]="newTask.due_date">
+        </ion-datetime>
+      </ion-item>
+
+      <ion-button expand="block" (click)="addTask()">Add Task</ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
