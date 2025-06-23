@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { TasksService } from '../services/tasks.service';
 import { AuthService } from '../services/auth.service';
+import { ModalController } from '@ionic/angular';
+import { EditTaskModalPage } from '../modals/edit-task-modal/edit-task-modal.page';
+
 
 @Component({
   selector: 'app-home',
@@ -16,11 +19,22 @@ export class HomePage implements OnInit {
     due_date: ''
   };
 
-  constructor(private tasksService: TasksService, private authService: AuthService) {}
+  constructor(private tasksService: TasksService, private authService: AuthService, private modalCtrl: ModalController ) {}
   ngOnInit() {
     this.loadtasks();
   }
-
+  async openEditModal(task: any){
+    const modal = await this.modalCtrl.create({
+      component: EditTaskModalPage,
+      componentProps:{task}
+    });
+    modal.onDidDismiss().then(result => {
+      if (result.data?.updated){
+        this.loadtasks();
+      }
+    });
+    await modal.present();
+  }
   loadtasks(){
     this.tasksService.getTasks().then(response =>{
       response.subscribe({

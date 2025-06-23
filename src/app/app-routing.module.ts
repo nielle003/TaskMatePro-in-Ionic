@@ -15,6 +15,10 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
+  {
+    path: 'edit-task-modal',
+    loadChildren: () => import('./modals/edit-task-modal/edit-task-modal.module').then( m => m.EditTaskModalPageModule)
+  },
 ];
 
 @NgModule({

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Storage } from '@ionic/storage-angular';
 import { AuthService } from './auth.service';
-
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +57,25 @@ export class TasksService {
     });
   }
   async editTask(updatedTask:any){
-    const token = await this.authservice.getToken
+    const token = await this.authservice.getToken();
+    return this.http.post<any>('http://localhost/taskmate-backend/update-task.php', updatedTask, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
   }
+
+  deleteTask(taskId: number): Observable<any> {
+    return from(this.authservice.getToken()).pipe(
+      switchMap((token) => {
+        return this.http.post(`http://localhost/taskmate-backend/delete-task.php`, { id: taskId }, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+      })
+    );
+  }
+
 }
