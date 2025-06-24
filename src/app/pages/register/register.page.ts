@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoadingController, ToastController } from '@ionic/angular';
-
+import { firstValueFrom } from 'rxjs';
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -29,27 +29,31 @@ export class RegisterPage implements OnInit {
       message: 'Registering...',
       spinner: 'crescent',
       duration: 3000
-    })
+    });
+
     await loading.present();
 
+    try {
+      const res: any = await firstValueFrom(this.authService.register(this.email, this.password));
+      await loading.dismiss();
 
-    this.authService.register( this.email, this.password).subscribe({
-      next: async (res: any) => {
-        await loading.dismiss();
-        if (res.success) {
-          this.showToast('Successfully Registered!', 'success');
-          this.router.navigate(['/login']);
-        } else {
-          this.showToast('Registration Failed', 'danger')
-        }
-      },
-      error: async (err:any) => {
-        await loading.dismiss();
-        this.showToast('Server error occurred!', 'danger');
-        console.log(err);
+      if (res.success) {
+        this.showToast('Successfully Registered!', 'success');
+        this.message = res.message;
+        this.router.navigate(['/login']);
+      } else {
+        this.showToast('Registration Failed', 'danger');
+        this.message = res.message || 'Please try again';
       }
-    });
+
+    } catch (err) {
+      await loading.dismiss();
+      this.showToast('Server error occurred!', 'danger');
+      console.error('Registration error:', err);
+      this.message = 'Server error';
+    }
   }
+
 
   async showToast(message: string, color: string = 'primary'){
     const toast = await this.toastCtrl.create({

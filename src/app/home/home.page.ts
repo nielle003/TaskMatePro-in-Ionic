@@ -3,7 +3,8 @@ import { TasksService } from '../services/tasks.service';
 import { AuthService } from '../services/auth.service';
 import { ModalController } from '@ionic/angular';
 import { EditTaskModalPage } from '../modals/edit-task-modal/edit-task-modal.page';
-
+import { ToastController } from '@ionic/angular';
+   
 
 @Component({
   selector: 'app-home',
@@ -19,7 +20,7 @@ export class HomePage implements OnInit {
     due_date: ''
   };
 
-  constructor(private tasksService: TasksService, private authService: AuthService, private modalCtrl: ModalController ) {}
+  constructor(private tasksService: TasksService, private authService: AuthService, private modalCtrl: ModalController, private toastCtrl: ToastController ) {}
   ngOnInit() {
     this.loadtasks();
   }
@@ -55,9 +56,11 @@ export class HomePage implements OnInit {
       response.subscribe({
         next: (res) => {
           if(res.success){
+            this.showToast('Successfully added task', 'success');
             this.newTask = {title: '', description: '', due_date:''};
             this.loadtasks();
           } else {
+            this.showToast('Failed to add task', 'danger');
             console.log(res.message);
           }
         },
@@ -78,17 +81,28 @@ export class HomePage implements OnInit {
       this.tasksService.deleteTask(taskId).subscribe({
         next: (res) =>{
           if (res.success){
-            alert('Task deleted successfully!');
+            this.showToast('Successfully Deleted!', 'success');
             this.loadtasks();
           }else{
-            alert('Failed to delete task');
+            this.showToast('Failed to delete task', 'danger');
           }
         },
         error: err =>{
           console.error('Error deleting task:', err);
-          alert('An error occurred while trying to delete the');
+          this.showToast('An error occurred while deleting the task', 'danger')
         }
       });
     }
+  }
+
+
+  async showToast(message: string, color: string = 'primary'){
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 2000,
+      color,
+      position: 'top'
+    });
+    toast.present();
   }
 }

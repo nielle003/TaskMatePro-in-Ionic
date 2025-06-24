@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { TasksService } from 'src/app/services/tasks.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-edit-task-modal',
@@ -18,7 +19,7 @@ export class EditTaskModalPage {
   constructor(
     private modalCtrl: ModalController,
     private tasksService: TasksService,
-    private navParams: NavParams
+    private toastCtrl : ToastController
   ) { }
 
 
@@ -28,11 +29,13 @@ export class EditTaskModalPage {
         next: (res) => {
           if (res.success){
             this.modalCtrl.dismiss({updated: true});
+            this.showToast('Successfully updated task', 'success');
           } else{
-            alert('Failed to update task')
+            this.showToast('Failed to update task', 'danger');
           }
         },
         error: (err) => {
+          this.showToast('Error updating task', 'danger');
           console.error('Error updating task: ', err);
         }
       })
@@ -40,5 +43,16 @@ export class EditTaskModalPage {
   }
   close(){
     this.modalCtrl.dismiss();
+  }
+
+
+  async showToast(message: string, color: string = 'primary'){
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 2000,
+      color,
+      position: 'top'
+    });
+    toast.present();
   }
 }
