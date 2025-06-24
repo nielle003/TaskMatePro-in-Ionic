@@ -4,7 +4,7 @@ import { AuthService } from '../services/auth.service';
 import { ModalController } from '@ionic/angular';
 import { EditTaskModalPage } from '../modals/edit-task-modal/edit-task-modal.page';
 import { ToastController } from '@ionic/angular';
-   
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +20,7 @@ export class HomePage implements OnInit {
     due_date: ''
   };
 
-  constructor(private tasksService: TasksService, private authService: AuthService, private modalCtrl: ModalController, private toastCtrl: ToastController ) {}
+  constructor(private tasksService: TasksService, private authService: AuthService, private modalCtrl: ModalController, private toastCtrl: ToastController, private router: Router ) {}
   ngOnInit() {
     this.loadtasks();
   }
@@ -93,6 +93,10 @@ export class HomePage implements OnInit {
         }
       });
     }
+  }
+
+  calendar(){
+    this.router.navigate(['/calendar'])
   }
 
 

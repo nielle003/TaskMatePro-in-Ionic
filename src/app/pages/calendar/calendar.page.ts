@@ -26,7 +26,7 @@ export class CalendarPage implements OnInit {
     initialView: 'dayGridMonth',
     plugins: [dayGridPlugin],
     headerToolbar: {
-      left: 'prev,next today',
+      left: 'prev,next',
       center: 'title',
       right: 'dayGridMonth,dayGridWeek,dayGridDay'
     },

@@ -10,12 +10,16 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="tasks-content ion-padding">
-
+  
   <!-- Task List Section -->
   <ion-card class="task-list-card">
-    <ion-card-header>
+    <ion-card-header class="header">
       <ion-card-title>Your Tasks</ion-card-title>
+      <ion-button fill="clear" (click)="calendar()" class="calendar-btn">
+        <ion-icon name="calendar-outline" slot="icon-only"></ion-icon>
+      </ion-button>
     </ion-card-header>
+
 
     <ion-list *ngIf="tasks.length > 0; else noTasks">
       <ion-item-sliding *ngFor="let task of tasks">

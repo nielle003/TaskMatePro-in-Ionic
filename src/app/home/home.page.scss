@@ -58,3 +58,15 @@
   }
 }
 
+
+.header {
+  display: flex;
+  justify-content: space-between;
+ /* This will align the title and button on opposite sides */
+}
+
+.calendar-btn {
+  display: flex;
+  margin-left: 250px; /* This ensures the button moves to the right */
+}
+
