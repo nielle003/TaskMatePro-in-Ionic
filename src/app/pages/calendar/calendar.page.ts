@@ -20,7 +20,6 @@ import { TasksService } from 'src/app/services/tasks.service';
   ]
 })
 export class CalendarPage implements OnInit {
-  private baseUrl = 'http://localhost/taskmate-backend/tasks';
   // Use CalendarOptions instead of individual properties
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',

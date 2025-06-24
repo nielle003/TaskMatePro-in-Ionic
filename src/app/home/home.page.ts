@@ -21,8 +21,8 @@ export class HomePage implements OnInit {
   };
 
   constructor(private tasksService: TasksService, private authService: AuthService, private modalCtrl: ModalController, private toastCtrl: ToastController, private router: Router ) {}
-  ngOnInit() {
-    this.loadtasks();
+  async ngOnInit() {
+    await this.loadtasks();
   }
   async openEditModal(task: any){
     const modal = await this.modalCtrl.create({
