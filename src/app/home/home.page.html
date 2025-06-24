@@ -1,55 +1,78 @@
-<ion-header>
+<ion-header translucent>
   <ion-toolbar color="primary">
     <ion-title>My Tasks</ion-title>
-    <ion-button slot = "end" expand="block" (click)="logout()">Log Out</ion-button>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="logout()">
+        <ion-icon name="log-out-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <!-- Task List -->
-  <ion-list>
-    <ion-item *ngFor="let task of tasks">
-      <ion-label>
-        <h2>{{ task.title }}</h2>
-        <p>{{ task.description }}</p>
-        <p>Due: {{ task.due_date }}</p>
-        <p>Status: {{ task.status }}</p>
-      </ion-label>
-      <ion-button fill="clear" color="primary" (click)="openEditModal(task)">
-        Edit
-      </ion-button>
-      <ion-button color="danger" slot="end" (click)="deleteTask(task.id)">
-        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-      </ion-button>
-    </ion-item>
-  </ion-list>
+<ion-content [fullscreen]="true" class="tasks-content ion-padding">
 
-  <!-- Add Task Form -->
-  <ion-card>
+  <!-- Task List Section -->
+  <ion-card class="task-list-card">
+    <ion-card-header>
+      <ion-card-title>Your Tasks</ion-card-title>
+    </ion-card-header>
+
+    <ion-list *ngIf="tasks.length > 0; else noTasks">
+      <ion-item-sliding *ngFor="let task of tasks">
+        <ion-item>
+          <ion-label>
+            <h2>{{ task.title }}</h2>
+            <p>{{ task.description }}</p>
+            <p><strong>Due:</strong> {{ task.due_date }}</p>
+            <p><strong>Status:</strong> {{ task.status }}</p>
+          </ion-label>
+          <ion-button fill="clear" slot="end" color="medium" (click)="openEditModal(task)">
+            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" color="danger" slot="end" (click)="deleteTask(task.id)">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-item-sliding>
+    </ion-list>
+
+    <ng-template #noTasks>
+      <ion-text color="medium" class="ion-padding">
+        <p class="ion-text-center">No tasks available. Add one below!</p>
+      </ion-text>
+    </ng-template>
+  </ion-card>
+
+  <!-- Add Task Form Section -->
+  <ion-card class="add-task-card">
     <ion-card-header>
       <ion-card-title>Add New Task</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
-      <ion-item>
+      <ion-item lines="inset">
         <ion-label position="floating">Title</ion-label>
         <ion-input [(ngModel)]="newTask.title" required></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item lines="inset">
         <ion-label position="floating">Description</ion-label>
         <ion-textarea [(ngModel)]="newTask.description"></ion-textarea>
       </ion-item>
 
-      <ion-item>
-        <ion-label position="floating">Due Date</ion-label>
+      <div class="datetime-container">
+        <label class="datetime-label">Due Date</label>
         <ion-datetime
-          display-format="YYYY-MM-DD"
-          [(ngModel)]="newTask.due_date">
+          presentation="date"
+          [(ngModel)]="newTask.due_date"
+          class="datetime-fixed"
+          show-clear-button="true">
         </ion-datetime>
-      </ion-item>
+      </div>
 
-      <ion-button expand="block" (click)="addTask()">Add Task</ion-button>
+
+
+      <ion-button expand="block" shape="round" (click)="addTask()">Add Task</ion-button>
     </ion-card-content>
   </ion-card>
 </ion-content>

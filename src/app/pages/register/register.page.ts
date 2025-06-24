@@ -53,6 +53,9 @@ export class RegisterPage implements OnInit {
       this.message = 'Server error';
     }
   }
+  goToLogin(){
+    this.router.navigate(['/login']);
+  }
 
 
   async showToast(message: string, color: string = 'primary'){
