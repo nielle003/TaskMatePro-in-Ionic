@@ -60,6 +60,31 @@ export class HomePage implements OnInit {
     }
   }
 
+  async toggleStatus (task: any){
+    const newStatus = task.status === 'Completed'?'Pending':'Completed';
+    
+    await this.tasksService.updateStatus(task.id, newStatus).then(response =>{
+      response.subscribe({
+        next: res =>{
+          if (res.success){
+            task.status = newStatus;
+            this.showToast('Successfully updated', 'success');
+          } else {
+            this.showToast('Failed to update status', 'danger');
+          }
+        },
+
+        error: err =>{
+          this.showToast('Server error', 'danger');
+          console.log("Error updating status", err);
+        }
+      });
+    });
+
+    this.sortTasks();
+    this.filterTasks();
+  }
+
   async filterTasks(){
     if(this.selectedStatus === "all"){
       this.tasks = [...this.allTasks];

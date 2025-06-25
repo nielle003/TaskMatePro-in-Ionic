@@ -55,6 +55,9 @@
           <ion-button fill="clear" color="danger" slot="end" (click)="deleteTask(task.id)">
             <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
           </ion-button>
+          <ion-button fill = "outline" color ="success" (click) = "toggleStatus(task)">
+            {{task.status === 'completed' ? 'Mark as Pending' : 'Mark as Completed'}}
+          </ion-button>
         </ion-item>
       </ion-item-sliding>
     </ion-list>
