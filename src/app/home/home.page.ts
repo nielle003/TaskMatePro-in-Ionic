@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 })
 export class HomePage implements OnInit {
   tasks: any[] = [];
+  allTasks:any[] = [];
+  selectedStatus = 'all';
   newTask = {
     title: '',
     description: '',
@@ -24,6 +26,8 @@ export class HomePage implements OnInit {
   async ngOnInit() {
     await this.loadtasks();
   }
+
+
   async openEditModal(task: any){
     const modal = await this.modalCtrl.create({
       component: EditTaskModalPage,
@@ -36,12 +40,24 @@ export class HomePage implements OnInit {
     });
     await modal.present();
   }
+
+  async filterTasks(){
+    if(this.selectedStatus === "all"){
+      this.tasks = this.allTasks;
+    }else {
+      this.tasks = this.allTasks.filter(task => task.status === this.selectedStatus);
+    }
+  }
+
+
+
   loadtasks(){
     this.tasksService.getTasks().then(response =>{
       response.subscribe({
         next:(res)=>{
-          this.tasks = res.tasks;
+          this.allTasks = res.tasks;
           console.log('tasks', res.tasks);
+          this.filterTasks();
         },
         error: (err) => {
           console.error('Error fetching tasks:', err)

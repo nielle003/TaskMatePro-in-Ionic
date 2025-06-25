@@ -20,6 +20,15 @@
       </ion-button>
     </ion-card-header>
 
+    <ion-item>
+      <ion-label>Status</ion-label>
+      <ion-select [(ngModel)] = "selectedStatus" (ionChange) = "filterTasks()">
+        <ion-select-option value ="all">All</ion-select-option>
+        <ion-select-option value ="pending">Pending</ion-select-option>
+        <ion-select-option value ="completed">Completed</ion-select-option>
+      </ion-select>
+    </ion-item>
+
 
     <ion-list *ngIf="tasks.length > 0; else noTasks">
       <ion-item-sliding *ngFor="let task of tasks">
