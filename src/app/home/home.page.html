@@ -29,6 +29,16 @@
       </ion-select>
     </ion-item>
 
+    <ion-item>
+      <ion-label>Sort By</ion-label>
+      <ion-select [(ngModel)] = "sortOption" (ionChange) = "sortTasks()">
+        <ion-select-option value = "dueDateAsc">Due Date ↑</ion-select-option>
+        <ion-select-option value = "dueDateDesc">Due Date ↓</ion-select-option>
+        <ion-select-option value ="titleAsc">Title A-Z</ion-select-option>
+        <ion-select-option value = "titleDesc">Title Z-A</ion-select-option>
+      </ion-select>
+    </ion-item>
+
 
     <ion-list *ngIf="tasks.length > 0; else noTasks">
       <ion-item-sliding *ngFor="let task of tasks">

@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
   standalone: false,
 })
 export class HomePage implements OnInit {
+  sortOption = 'dueDateAsc'; 
   tasks: any[] = [];
   allTasks:any[] = [];
   selectedStatus = 'all';
@@ -25,6 +26,7 @@ export class HomePage implements OnInit {
   constructor(private tasksService: TasksService, private authService: AuthService, private modalCtrl: ModalController, private toastCtrl: ToastController, private router: Router ) {}
   async ngOnInit() {
     await this.loadtasks();
+    await this.sortTasks();
   }
 
 
@@ -41,12 +43,30 @@ export class HomePage implements OnInit {
     await modal.present();
   }
 
+  async sortTasks(){
+    switch(this.sortOption){
+      case 'dueDateAsc':
+        await this.tasks.sort((a, b) => new Date (a.due_date).getTime() - new Date(b.due_date).getTime());
+        break;
+      case 'dueDateDesc':
+        await this.tasks.sort((a, b)=> new Date(b.due_date).getTime() - new Date (a.due_date).getTime());
+        break;
+      case 'titlAsc':
+        await this.tasks.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case 'titleDesc':
+        await this.tasks.sort((a, b) => b.title.localeCompare(a.title));
+        break;
+    }
+  }
+
   async filterTasks(){
     if(this.selectedStatus === "all"){
-      this.tasks = this.allTasks;
+      this.tasks = [...this.allTasks];
     }else {
       this.tasks = this.allTasks.filter(task => task.status === this.selectedStatus);
     }
+    this.sortTasks();
   }
 
 
