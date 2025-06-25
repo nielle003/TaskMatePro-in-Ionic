@@ -20,6 +20,25 @@
       </ion-button>
     </ion-card-header>
 
+    <ion-item>
+      <ion-label>Status</ion-label>
+      <ion-select [(ngModel)] = "selectedStatus" (ionChange) = "filterTasks()">
+        <ion-select-option value ="all">All</ion-select-option>
+        <ion-select-option value ="pending">Pending</ion-select-option>
+        <ion-select-option value ="completed">Completed</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Sort By</ion-label>
+      <ion-select [(ngModel)] = "sortOption" (ionChange) = "sortTasks()">
+        <ion-select-option value = "dueDateAsc">Due Date ↑</ion-select-option>
+        <ion-select-option value = "dueDateDesc">Due Date ↓</ion-select-option>
+        <ion-select-option value ="titleAsc">Title A-Z</ion-select-option>
+        <ion-select-option value = "titleDesc">Title Z-A</ion-select-option>
+      </ion-select>
+    </ion-item>
+
 
     <ion-list *ngIf="tasks.length > 0; else noTasks">
       <ion-item-sliding *ngFor="let task of tasks">
@@ -35,6 +54,9 @@
           </ion-button>
           <ion-button fill="clear" color="danger" slot="end" (click)="deleteTask(task.id)">
             <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-button>
+          <ion-button fill = "outline" color ="success" (click) = "toggleStatus(task)">
+            {{task.status === 'completed' ? 'Mark as Pending' : 'Mark as Completed'}}
           </ion-button>
         </ion-item>
       </ion-item-sliding>

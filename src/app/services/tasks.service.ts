@@ -45,6 +45,19 @@ export class TasksService {
     });
   }
 
+   async updateStatus(id: number, status: string){
+    const token = await this.authservice.getToken();
+    console.log('Sending token:', token);
+    const body = {id ,status};
+
+    return this.http.post<any>('http://localhost/taskmate-backend/update-status.php', body, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+  }
+
+   
 
 
   async addTask(task: any){
