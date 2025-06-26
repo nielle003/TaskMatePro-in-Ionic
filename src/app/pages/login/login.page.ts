@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { firstValueFrom } from 'rxjs';
+import { FirebaseService } from 'src/app/services/firebase.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ export class LoginPage {
     private authService: AuthService, 
     private router: Router,
     private loadingCtrl: LoadingController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private firebaseService: FirebaseService
   ) { }
   
   async onLogin() {
@@ -43,6 +45,18 @@ export class LoginPage {
       if (res.success) {
         await this.authService.storeToken(res.token);
         console.log('Saved token:', res.token);
+
+
+       this.firebaseService.requestPermissionAndGetToken().then(Firetoken =>{
+          if(Firetoken){
+             this.authService.saveFcmToken(Firetoken).then(() => {
+              console.log('FCM token saved to backend!');
+            }).catch (err => {
+              console.error('Failed to save FCM token', err);
+            });
+          }
+        });
+        
         this.router.navigate(['/home']);
       } else {
         this.showToast('Login failed', 'danger');

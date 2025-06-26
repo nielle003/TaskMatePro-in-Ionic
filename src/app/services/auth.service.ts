@@ -61,7 +61,21 @@ export class AuthService {
 
   }
 
+  async saveFcmToken(FireToken: string): Promise<any> {
+    await this.ensureReady();
+    const token = await this._storage?.get('token');
+    console.log('FCM Token being sent:', FireToken);
 
+    return this.http.post<any>(
+      'http://localhost/taskmate-backend/save-fcm-token.php',
+      {token: FireToken},
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
+    ).toPromise();
+  }
 
-
+ 
 }

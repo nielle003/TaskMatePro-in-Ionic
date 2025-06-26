@@ -5,6 +5,7 @@ import { ModalController } from '@ionic/angular';
 import { EditTaskModalPage } from '../modals/edit-task-modal/edit-task-modal.page';
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { FirebaseService } from '../services/firebase.service';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,7 @@ export class HomePage implements OnInit {
     due_date: ''
   };
 
-  constructor(private tasksService: TasksService, private authService: AuthService, private modalCtrl: ModalController, private toastCtrl: ToastController, private router: Router ) {}
+  constructor(private tasksService: TasksService, private authService: AuthService, private modalCtrl: ModalController, private toastCtrl: ToastController, private router: Router) {}
   async ngOnInit() {
     await this.loadtasks();
     await this.sortTasks();
